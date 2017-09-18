@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -14,7 +15,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 import com.vincent.filepicker.Constant;
 import com.vincent.filepicker.R;
 import com.vincent.filepicker.ToastUtil;
@@ -102,10 +103,11 @@ public class ImagePickAdapter extends BaseAdapter<ImageFile, ImagePickAdapter.Im
             } else {
                 file = mList.get(position);
             }
-            Glide.with(mContext)
-                    .load(file.getPath())
+            Picasso.with(mContext)
+                    .load(new File(file.getPath()))
+                    .resizeDimen(R.dimen.image_list_width,R.dimen.image_list_width)
+                    .config(Bitmap.Config.RGB_565)
                     .centerCrop()
-                    .crossFade()
                     .into(holder.mIvThumbnail);
 
             if (file.isSelected()) {

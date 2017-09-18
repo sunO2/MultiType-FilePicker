@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -16,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 import com.vincent.filepicker.R;
 import com.vincent.filepicker.ToastUtil;
 import com.vincent.filepicker.Util;
@@ -105,10 +106,11 @@ public class VideoPickAdapter extends BaseAdapter<VideoFile, VideoPickAdapter.Vi
                 file = mList.get(position);
             }
 
-            Glide.with(mContext)
+            Picasso.with(mContext)
                     .load(file.getPath())
+                    .resizeDimen(R.dimen.image_list_width,R.dimen.image_list_width)
+                    .config(Bitmap.Config.RGB_565)
                     .centerCrop()
-                    .crossFade()
                     .into(holder.mIvThumbnail);
 
             if (file.isSelected()) {

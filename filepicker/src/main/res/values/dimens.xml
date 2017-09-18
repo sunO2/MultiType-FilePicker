@@ -1,0 +1,6 @@
+<resources>
+
+    <dimen name="image_list_width">50dp</dimen>
+    <dimen name="image_browser_width">100dp</dimen>
+
+</resources>

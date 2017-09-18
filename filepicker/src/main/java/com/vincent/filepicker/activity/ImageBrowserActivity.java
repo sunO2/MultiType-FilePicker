@@ -13,7 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bm.library.PhotoView;
-import com.bumptech.glide.Glide;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 import com.vincent.filepicker.Constant;
 import com.vincent.filepicker.R;
 import com.vincent.filepicker.ToastUtil;
@@ -22,6 +23,7 @@ import com.vincent.filepicker.filter.callback.FilterResultCallback;
 import com.vincent.filepicker.filter.entity.Directory;
 import com.vincent.filepicker.filter.entity.ImageFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,12 +153,18 @@ public class ImageBrowserActivity extends BaseActivity {
     private class ImageBrowserAdapter extends PagerAdapter {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            PhotoView view = new PhotoView(ImageBrowserActivity.this);
+            PhotoView view = new PhotoView(ImageBrowserActivity.this){
+                @Override
+                protected void onDetachedFromWindow() {
+                    super.onDetachedFromWindow();
+                    setImageDrawable(null);
+                }
+            };
             view.enable();
             view.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            Glide.with(ImageBrowserActivity.this)
-                    .load(mList.get(position).getPath())
-                    .crossFade()
+            Picasso.with(ImageBrowserActivity.this)
+                    .load(new File(mList.get(position).getPath()))
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .into(view);
             container.addView(view);
             return view;
